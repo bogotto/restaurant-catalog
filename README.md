@@ -1,5 +1,7 @@
 # Онлайн каталог продукции ресторана
 
+[![Maintainability](https://qlty.sh/gh/bogotto/projects/restaurant-catalog/maintainability.svg)](https://qlty.sh/gh/bogotto/projects/restaurant-catalog)
+
 Веб-приложение — онлайн-каталог блюд ресторана. Посетитель просматривает меню по категориям и открывает карточку блюда с описанием, ценой и весом. Администратор управляет категориями и блюдами через панель управления.
 
 ## Стек
