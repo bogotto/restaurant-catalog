@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Каталог блюд</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; }
+        h1 { text-align: center; }
+        .dish { border: 1px solid #ddd; border-radius: 8px; padding: 12px 16px; margin: 10px 0; }
+        .dish a { text-decoration: none; color: #1a5276; font-size: 18px; }
+        .price { float: right; font-weight: bold; }
+        .cat { color: #888; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <h1>Каталог блюд ресторана</h1>
+    {% for dish in dishes %}
+        <div class="dish">
+            <span class="price">{{ dish.price }} ₽</span>
+            <a href="{% url 'dish_detail' dish.pk %}">{{ dish.name }}</a>
+            <div class="cat">{{ dish.category.name }}</div>
+        </div>
+    {% empty %}
+        <p>Пока нет блюд.</p>
+    {% endfor %}
+</body>
+</html>
