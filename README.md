@@ -38,7 +38,7 @@ py manage.py runserver
 ## Демонстрация(деплой)
 
 🔗 Live: https://bogotto.pythonanywhere.com/
-Тестовый вход в админку: admin1 / <твой пароль>
+Тестовый вход в админку: admin1 / 12345678
 
 ## Автор
 
