@@ -17,6 +17,7 @@
     {% for dish in dishes %}
         <div class="dish">
             <span class="price">{{ dish.price }} ₽</span>
+            {% if dish.image %}<img src="{{ dish.image.url }}" alt="{{ dish.name }}" width="150"><br>{% endif %}
             <a href="{% url 'dish_detail' dish.pk %}">{{ dish.name }}</a>
             <div class="cat">{{ dish.category.name }}</div>
         </div>

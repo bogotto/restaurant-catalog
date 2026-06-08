@@ -12,6 +12,7 @@
 <body>
     <p><a class="back" href="{% url 'dish_list' %}">← Назад в каталог</a></p>
     <h1>{{ dish.name }}</h1>
+    {% if dish.image %}<img src="{{ dish.image.url }}" alt="{{ dish.name }}" width="350"><br>{% endif %}
     <p class="cat">Категория: {{ dish.category.name }}</p>
     <p>{{ dish.description }}</p>
     <p>Вес: {{ dish.weight }} г</p>

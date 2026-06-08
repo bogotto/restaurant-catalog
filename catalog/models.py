@@ -24,6 +24,7 @@ class Dish(models.Model):
     price = models.DecimalField("Цена, ₽", max_digits=8, decimal_places=2)
     weight = models.PositiveIntegerField("Вес, г", blank=True, null=True)
     is_available = models.BooleanField("В наличии", default=True)
+    image = models.ImageField("Фото", upload_to="dishes/", blank=True, null=True)
 
     class Meta:
         verbose_name = "Блюдо"
