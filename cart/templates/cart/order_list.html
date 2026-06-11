@@ -1,0 +1,47 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Мои заказы{% endblock %}
+{% block category_bar %}{% endblock %}
+
+{% block content %}
+<section class="container">
+  <div class="page-title"><h1>Мои заказы</h1></div>
+
+  {% if orders %}
+    <div class="orders">
+      {% for order in orders %}
+        <article class="order-card">
+          <div class="order-head">
+            <div>
+              <span class="order-no">Заказ №{{ order.id }}</span>
+              <span class="order-date">от {{ order.created|date:"d.m.Y H:i" }}</span>
+            </div>
+            <span class="order-status">Принят</span>
+          </div>
+          <div class="order-body">
+            {% for item in order.items.all %}
+              <div class="order-line">
+                <span>
+                  {% if item.dish %}{{ item.dish.name }}{% else %}Блюдо снято с меню{% endif %}
+                  <span class="muted">× {{ item.quantity }}</span>
+                </span>
+                <span>{{ item.get_cost }} ₽</span>
+              </div>
+            {% endfor %}
+          </div>
+          <div class="order-foot">
+            <span class="muted">Доставка: {{ order.address }}</span>
+            <span class="order-total">Итого: {{ order.get_total_cost }} ₽</span>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty">
+      <div class="big">🧾</div>
+      <p>У вас пока нет заказов.</p>
+      <a class="btn btn-primary" href="{% url 'catalog:dish_list' %}">Перейти в каталог</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

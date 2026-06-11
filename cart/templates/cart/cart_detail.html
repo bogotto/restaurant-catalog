@@ -1,0 +1,57 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Корзина{% endblock %}
+{% block category_bar %}{% endblock %}
+
+{% block content %}
+<section class="container">
+  <div class="page-title"><h1>Корзина</h1></div>
+
+  {% if cart|length %}
+    <div class="cart-layout">
+      <div class="cart-items">
+        {% for item in cart %}
+          {% with dish=item.dish %}
+          <div class="cart-item">
+            <a class="thumb" href="{{ dish.get_absolute_url }}">
+              {% if dish.image %}<img src="{{ dish.image.url }}" alt="{{ dish.name }}">{% endif %}
+            </a>
+            <div class="it-info">
+              <a class="it-name" href="{{ dish.get_absolute_url }}">{{ dish.name }}</a>
+              <div class="it-meta">{{ item.price }} ₽ за порцию · {{ dish.category.name }}</div>
+              <div class="it-controls">
+                <form action="{% url 'cart:cart_add' dish.id %}" method="post" style="display:flex;gap:8px;align-items:center">
+                  {% csrf_token %}
+                  <input type="hidden" name="override" value="True">
+                  <input type="number" name="quantity" class="qty-input" value="{{ item.quantity }}" min="1" max="50" aria-label="Количество">
+                  <button type="submit" class="btn btn-ghost btn-sm">Обновить</button>
+                </form>
+                <form action="{% url 'cart:cart_remove' dish.id %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="link-danger">Удалить</button>
+                </form>
+              </div>
+            </div>
+            <div class="it-total">{{ item.total_price }} ₽</div>
+          </div>
+          {% endwith %}
+        {% endfor %}
+      </div>
+
+      <aside class="summary">
+        <h3>Итого</h3>
+        <div class="row"><span>Позиций</span><span>{{ cart|length }} шт.</span></div>
+        <div class="row total"><span>К оплате</span><span>{{ cart.get_total_price }} ₽</span></div>
+        <a href="{% url 'cart:checkout' %}" class="btn btn-primary btn-block" style="margin-top:16px">Оформить заказ</a>
+        <a href="{% url 'catalog:dish_list' %}" class="btn btn-ghost btn-block" style="margin-top:10px">Продолжить выбор</a>
+      </aside>
+    </div>
+  {% else %}
+    <div class="empty">
+      <div class="big">🛒</div>
+      <p>Корзина пуста. Добавьте блюда из каталога.</p>
+      <a class="btn btn-primary" href="{% url 'catalog:dish_list' %}">Перейти в каталог</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

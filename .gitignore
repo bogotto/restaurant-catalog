@@ -1,4 +1,9 @@
-venv/
 __pycache__/
-*.pyc
+*.py[cod]
 db.sqlite3
+venv/
+.venv/
+staticfiles/
+media/dishes/*
+!media/dishes/.gitkeep
+.DS_Store

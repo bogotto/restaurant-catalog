@@ -1,0 +1,54 @@
+[
+  {"model": "catalog.category", "pk": 1, "fields": {"name": "Салаты"}},
+  {"model": "catalog.category", "pk": 2, "fields": {"name": "Супы"}},
+  {"model": "catalog.category", "pk": 3, "fields": {"name": "Горячие блюда"}},
+  {"model": "catalog.category", "pk": 4, "fields": {"name": "Десерты"}},
+
+  {"model": "catalog.dish", "pk": 1, "fields": {
+    "category": 1, "name": "Греческий салат", "price": "650.00", "weight": 220,
+    "is_available": true,
+    "description": "Свежие овощи, сыр фета, оливки и заправка на оливковом масле с орегано.",
+    "calories": 90, "proteins": "2.5", "fats": "7.5", "carbs": "4.0"}},
+
+  {"model": "catalog.dish", "pk": 2, "fields": {
+    "category": 1, "name": "Салат Цезарь с тигровыми креветками", "price": "600.00", "weight": 250,
+    "is_available": true,
+    "description": "Романо, тигровые креветки, пармезан, сухарики и соус «Цезарь».",
+    "calories": 140, "proteins": "9.0", "fats": "10.0", "carbs": "3.5"}},
+
+  {"model": "catalog.dish", "pk": 3, "fields": {
+    "category": 2, "name": "Солянка с двумя видами мяса и охотничьими колбасками", "price": "500.00", "weight": 350,
+    "is_available": true,
+    "description": "Наваристая солянка с говядиной, копчёностями, колбасками, оливками и лимоном.",
+    "calories": 75, "proteins": "5.0", "fats": "4.5", "carbs": "3.0"}},
+
+  {"model": "catalog.dish", "pk": 4, "fields": {
+    "category": 2, "name": "Борщ из говядины со сметаной", "price": "600.00", "weight": 350,
+    "is_available": true,
+    "description": "Классический борщ на говяжьем бульоне со сметаной и зеленью.",
+    "calories": 60, "proteins": "3.5", "fats": "3.0", "carbs": "5.0"}},
+
+  {"model": "catalog.dish", "pk": 5, "fields": {
+    "category": 3, "name": "Бефстроганов с картофельным пюре", "price": "900.00", "weight": 320,
+    "is_available": true,
+    "description": "Нежная говядина в сливочном соусе с воздушным картофельным пюре.",
+    "calories": 180, "proteins": "11.0", "fats": "11.0", "carbs": "9.0"}},
+
+  {"model": "catalog.dish", "pk": 6, "fields": {
+    "category": 3, "name": "Картофельный чебурек с жюльеном", "price": "900.00", "weight": 280,
+    "is_available": true,
+    "description": "Хрустящий чебурек с картофелем и грибным жюльеном под сыром.",
+    "calories": 250, "proteins": "7.0", "fats": "14.0", "carbs": "24.0"}},
+
+  {"model": "catalog.dish", "pk": 7, "fields": {
+    "category": 4, "name": "Шоколадный фондан", "price": "480.00", "weight": 150,
+    "is_available": true,
+    "description": "Тёплый шоколадный кекс с жидкой сердцевиной и шариком мороженого.",
+    "calories": 410, "proteins": "6.0", "fats": "24.0", "carbs": "43.0"}},
+
+  {"model": "catalog.dish", "pk": 8, "fields": {
+    "category": 4, "name": "Яблочный штрудель", "price": "480.00", "weight": 180,
+    "is_available": true,
+    "description": "Венский штрудель из тонкого теста с яблоками, корицей и изюмом.",
+    "calories": 270, "proteins": "3.5", "fats": "12.0", "carbs": "38.0"}}
+]

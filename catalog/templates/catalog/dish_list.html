@@ -1,28 +1,85 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Каталог блюд</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 900px; margin: 0 auto; padding: 20px; }
-        h1 { text-align: center; }
-        .dish { border: 1px solid #ddd; border-radius: 8px; padding: 12px 16px; margin: 10px 0; }
-        .dish a { text-decoration: none; color: #1a5276; font-size: 18px; }
-        .price { float: right; font-weight: bold; }
-        .cat { color: #888; font-size: 14px; }
-    </style>
-</head>
-<body>
-    <h1>Каталог блюд ресторана</h1>
-    {% for dish in dishes %}
-        <div class="dish">
-            <span class="price">{{ dish.price }} ₽</span>
-            {% if dish.image %}<img src="{{ dish.image.url }}" alt="{{ dish.name }}" width="150"><br>{% endif %}
-            <a href="{% url 'dish_detail' dish.pk %}">{{ dish.name }}</a>
-            <div class="cat">{{ dish.category.name }}</div>
-        </div>
-    {% empty %}
-        <p>Пока нет блюд.</p>
-    {% endfor %}
-</body>
-</html>
+{% extends "catalog/base.html" %}
+
+{% block title %}
+  {% if query %}Поиск: {{ query }}{% elif current_category %}{{ current_category.name }}{% else %}Каталог блюд ресторана{% endif %}
+{% endblock %}
+
+{% block content %}
+<section class="container">
+  {% if not query and not current_category %}
+    <div class="hero">
+      <div class="eyebrow">Меню ресторана</div>
+      <h1>Блюда, от которых сложно отказаться</h1>
+      <p>Свежие салаты, наваристые супы, горячее и десерты. Выбирайте, изучайте состав и КБЖУ и добавляйте в корзину.</p>
+      <div class="rule"></div>
+    </div>
+  {% endif %}
+
+  <div class="section-head">
+    <h2>
+      {% if query %}Результаты поиска: «{{ query }}»
+      {% elif current_category %}{{ current_category.name }}
+      {% else %}Все блюда{% endif %}
+    </h2>
+    <span class="count">{{ dishes|length }} поз.</span>
+  </div>
+
+  {% if dishes %}
+    <div class="grid">
+      {% for dish in dishes %}
+        <article class="card">
+          <a class="card-photo" href="{{ dish.get_absolute_url }}">
+            {% if dish.image %}<img src="{{ dish.image.url }}" alt="{{ dish.name }}" loading="lazy">{% endif %}
+          </a>
+          <div class="card-body">
+            <div class="card-cat">{{ dish.category.name }}</div>
+            <a class="menu-line" href="{{ dish.get_absolute_url }}">
+              <span class="name">{{ dish.name }}</span>
+              <span class="leader"></span>
+              <span class="price">{{ dish.price }} ₽</span>
+            </a>
+            {% if dish.description %}<p class="card-desc">{{ dish.description }}</p>{% endif %}
+
+            {% if dish.has_nutrition %}
+              <div class="macros">
+                {% if dish.calories %}<span class="macro kcal"><b>{{ dish.calories }}</b> ккал</span>{% endif %}
+                {% if dish.proteins is not None %}<span class="macro">Б <b>{{ dish.proteins }}</b></span>{% endif %}
+                {% if dish.fats is not None %}<span class="macro">Ж <b>{{ dish.fats }}</b></span>{% endif %}
+                {% if dish.carbs is not None %}<span class="macro">У <b>{{ dish.carbs }}</b></span>{% endif %}
+              </div>
+            {% endif %}
+
+            <div class="card-foot">
+              <form class="like-form" action="{% url 'catalog:toggle_like' dish.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <button type="submit" class="like-btn {% if dish.id in liked_ids %}liked{% endif %}"
+                        aria-label="Нравится" title="Нравится">
+                  <span class="heart">{% if dish.id in liked_ids %}♥{% else %}♡{% endif %}</span>
+                  <span class="like-num">{{ dish.likes_total }}</span>
+                </button>
+              </form>
+              <form class="add-form" action="{% url 'cart:cart_add' dish.id %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                <input type="number" name="quantity" class="qty-input" value="1" min="1" max="50" aria-label="Количество">
+                <button type="submit" class="btn btn-primary btn-sm">В корзину</button>
+              </form>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty">
+      <div class="big">🔍</div>
+      {% if query %}
+        <p>По запросу «{{ query }}» ничего не найдено.</p>
+        <a class="btn btn-ghost" href="{% url 'catalog:dish_list' %}">Показать все блюда</a>
+      {% else %}
+        <p>В этой категории пока нет блюд.</p>
+      {% endif %}
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

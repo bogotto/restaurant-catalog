@@ -1,21 +1,54 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ dish.name }}</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 700px; margin: 0 auto; padding: 20px; }
-        .back { color: #1a5276; }
-        .price { font-size: 22px; font-weight: bold; color: #196f3d; }
-    </style>
-</head>
-<body>
-    <p><a class="back" href="{% url 'dish_list' %}">← Назад в каталог</a></p>
-    <h1>{{ dish.name }}</h1>
-    {% if dish.image %}<img src="{{ dish.image.url }}" alt="{{ dish.name }}" width="350"><br>{% endif %}
-    <p class="cat">Категория: {{ dish.category.name }}</p>
-    <p>{{ dish.description }}</p>
-    <p>Вес: {{ dish.weight }} г</p>
-    <p class="price">{{ dish.price }} ₽</p>
-</body>
-</html>
+{% extends "catalog/base.html" %}
+
+{% block title %}{{ dish.name }} — каталог ресторана{% endblock %}
+{% block category_bar %}{% endblock %}
+
+{% block content %}
+<section class="container">
+  <div class="detail">
+    <div class="detail-photo">
+      {% if dish.image %}<img src="{{ dish.image.url }}" alt="{{ dish.name }}">{% endif %}
+    </div>
+
+    <div class="detail-info">
+      <div class="cat">{{ dish.category.name }}</div>
+      <h1>{{ dish.name }}</h1>
+      <div class="price">{{ dish.price }} ₽</div>
+
+      {% if dish.description %}<p class="lead">{{ dish.description }}</p>{% endif %}
+      {% if dish.weight %}<p class="weight">Вес порции: {{ dish.weight }} г</p>{% endif %}
+
+      {% if dish.has_nutrition %}
+        <table class="nutrition">
+          <caption>Пищевая ценность на 100 г</caption>
+          <tbody>
+            {% if dish.calories %}<tr><td>Калорийность</td><td>{{ dish.calories }} ккал</td></tr>{% endif %}
+            {% if dish.proteins is not None %}<tr><td>Белки</td><td>{{ dish.proteins }} г</td></tr>{% endif %}
+            {% if dish.fats is not None %}<tr><td>Жиры</td><td>{{ dish.fats }} г</td></tr>{% endif %}
+            {% if dish.carbs is not None %}<tr><td>Углеводы</td><td>{{ dish.carbs }} г</td></tr>{% endif %}
+          </tbody>
+        </table>
+      {% endif %}
+
+      <form class="detail-actions" action="{% url 'cart:cart_add' dish.id %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{% url 'cart:cart_detail' %}">
+        <input type="number" name="quantity" class="qty-input" value="1" min="1" max="50" aria-label="Количество">
+        <button type="submit" class="btn btn-primary">Добавить в корзину</button>
+      </form>
+
+      <form action="{% url 'catalog:toggle_like' dish.id %}" method="post" style="margin-top:12px">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ dish.get_absolute_url }}">
+        <button type="submit" class="like-btn {% if liked %}liked{% endif %}">
+          <span class="heart">{% if liked %}♥{% else %}♡{% endif %}</span>
+          <span>{% if liked %}Вам нравится{% else %}Нравится{% endif %}</span>
+          <span class="like-num">{{ dish.likes_count }}</span>
+        </button>
+      </form>
+
+      <a class="back-link" href="{% url 'catalog:dish_list' %}">← Назад в каталог</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,704 @@
+/* ============================================================
+   Онлайн-каталог ресторана — оформление
+   Палитра «тёплая бумага меню»: porcelain / espresso / paprika / brass
+   ============================================================ */
+
+:root {
+  --paper:  #f7f3ec;
+  --card:   #fffdf9;
+  --ink:    #241c16;
+  --muted:  #6f6357;
+  --accent: #b23a2e;   /* паприка — акцент, аппетит */
+  --accent-dk: #8f2c22;
+  --brass:  #b08d57;   /* латунь — КБЖУ, детали */
+  --sage:   #5e6b4f;   /* «в наличии», белки */
+  --line:   #e3d9c9;
+  --shadow: 0 14px 40px rgba(60, 40, 20, 0.10);
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Manrope", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+img { max-width: 100%; display: block; }
+
+.container {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 22px;
+}
+
+h1, h2, h3, .display {
+  font-family: "Playfair Display", "Times New Roman", serif;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Шапка ------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(247, 243, 236, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.header-row {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 16px 0;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  white-space: nowrap;
+}
+.brand .mark {
+  font-family: "Playfair Display", serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.brand .sub {
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Поиск */
+.search {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+}
+.search input {
+  width: 100%;
+  padding: 11px 16px 11px 42px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  font: inherit;
+  color: var(--ink);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.search input:focus {
+  border-color: var(--brass);
+  box-shadow: 0 0 0 3px rgba(176, 141, 87, 0.18);
+}
+.search svg {
+  position: absolute;
+  left: 15px; top: 50%;
+  transform: translateY(-50%);
+  width: 17px; height: 17px;
+  stroke: var(--muted);
+  pointer-events: none;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  white-space: nowrap;
+}
+.header-actions a { color: var(--muted); font-size: 0.92rem; }
+.header-actions a:hover { color: var(--ink); }
+.user-name { color: var(--ink); font-weight: 600; }
+
+/* Корзина в шапке */
+.cart-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 15px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink) !important;
+  font-weight: 600;
+}
+.cart-link svg { width: 18px; height: 18px; stroke: var(--ink); }
+.cart-count {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- Категории-вкладки ------------------------------ */
+.cat-bar { border-bottom: 1px solid var(--line); background: var(--paper); }
+.cat-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 12px 0;
+  scrollbar-width: none;
+}
+.cat-tabs::-webkit-scrollbar { display: none; }
+.cat-tab {
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  color: var(--muted);
+  white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+.cat-tab:hover { background: #efe7d9; color: var(--ink); }
+.cat-tab.active { background: var(--ink); color: var(--paper); }
+
+/* ---------- Hero ------------------------------------------- */
+.hero {
+  padding: 56px 0 30px;
+  text-align: center;
+}
+.hero .eyebrow {
+  font-size: 0.75rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  margin: 0 0 14px;
+}
+.hero p {
+  max-width: 560px;
+  margin: 0 auto;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+.hero .rule {
+  width: 60px; height: 2px;
+  background: var(--accent);
+  margin: 24px auto 0;
+}
+
+/* ---------- Сетка блюд ------------------------------------- */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 34px 0 18px;
+  gap: 16px;
+}
+.section-head h2 { font-size: 1.7rem; margin: 0; }
+.section-head .count { color: var(--muted); font-size: 0.9rem; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 26px;
+  padding-bottom: 60px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+
+.card-photo {
+  aspect-ratio: 4 / 3;
+  background: #ece3d4 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><text x='50%25' y='55%25' font-size='22' text-anchor='middle'>🍽️</text></svg>") center/40px no-repeat;
+  overflow: hidden;
+}
+.card-photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.card-body { padding: 16px 18px 18px; display: flex; flex-direction: column; flex: 1; }
+.card-cat {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-bottom: 6px;
+}
+
+/* Сигнатурная строка-меню: название ... цена */
+.menu-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.menu-line .name {
+  font-family: "Playfair Display", serif;
+  font-size: 1.18rem;
+  font-weight: 700;
+}
+.menu-line .leader {
+  flex: 1;
+  border-bottom: 1.5px dotted var(--line);
+  transform: translateY(-3px);
+}
+.menu-line .price {
+  font-weight: 700;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.card-desc {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0 0 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* КБЖУ-плашки */
+.macros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.macro {
+  font-size: 0.74rem;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: #fbf7ef;
+}
+.macro b { color: var(--ink); font-weight: 700; }
+.macro.kcal { border-color: #e8cdb0; color: var(--accent-dk); background: #fbeee0; }
+
+.card-foot { margin-top: auto; display: flex; align-items: center; gap: 10px; }
+
+/* ---------- Кнопки / формы --------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 18px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s, transform .08s, border-color .15s;
+}
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-dk); }
+.btn-ghost { background: transparent; border-color: var(--line); color: var(--ink); }
+.btn-ghost:hover { border-color: var(--brass); }
+.btn-block { width: 100%; }
+.btn-sm { padding: 8px 14px; font-size: 0.88rem; }
+
+.qty-input,
+input[type="text"], input[type="email"], input[type="password"],
+input[type="number"], textarea {
+  font: inherit;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 11px 13px;
+  outline: none;
+  width: 100%;
+  transition: border-color .15s, box-shadow .15s;
+}
+input:focus, textarea:focus {
+  border-color: var(--brass);
+  box-shadow: 0 0 0 3px rgba(176, 141, 87, 0.16);
+}
+.qty-input { width: 72px; text-align: center; }
+
+/* Добавление в корзину прямо с карточки */
+.add-form { display: flex; gap: 8px; width: 100%; }
+.add-form .qty-input { flex: 0 0 64px; }
+.add-form .btn { flex: 1; }
+
+/* ---------- Сообщения -------------------------------------- */
+.messages { margin: 18px 0 0; display: grid; gap: 10px; }
+.message {
+  padding: 12px 16px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  font-size: 0.94rem;
+}
+.message.success { border-color: #bcd1b0; background: #eef5e8; color: #3f5230; }
+.message.error   { border-color: #e6b6b0; background: #fbeae7; color: var(--accent-dk); }
+.message.info    { border-color: #cfd8e0; background: #eef2f6; color: #3a4a58; }
+
+/* ---------- Карточка блюда (detail) ------------------------ */
+.detail {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 44px;
+  padding: 40px 0 60px;
+  align-items: start;
+}
+.detail-photo {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  aspect-ratio: 4 / 3;
+  background: #ece3d4;
+}
+.detail-photo img { width: 100%; height: 100%; object-fit: cover; }
+.detail h1 { font-size: clamp(2rem, 4vw, 2.7rem); margin: 6px 0 10px; }
+.detail .cat { font-size: 0.74rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brass); }
+.detail .price { font-size: 1.8rem; font-weight: 800; color: var(--accent); margin: 6px 0 16px; }
+.detail .lead { color: var(--muted); font-size: 1.02rem; }
+.detail .weight { color: var(--muted); margin-top: 6px; }
+
+/* Таблица КБЖУ */
+.nutrition {
+  margin: 24px 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.nutrition caption {
+  text-align: left;
+  padding: 12px 16px;
+  background: #f1e9da;
+  font-weight: 700;
+  font-family: "Playfair Display", serif;
+}
+.nutrition table { width: 100%; border-collapse: collapse; }
+.nutrition td {
+  padding: 11px 16px;
+  border-top: 1px solid var(--line);
+  font-size: 0.95rem;
+}
+.nutrition td:first-child { color: var(--muted); }
+.nutrition td:last-child { text-align: right; font-weight: 700; }
+
+.detail-actions { display: flex; gap: 12px; align-items: center; margin-top: 18px; flex-wrap: wrap; }
+
+.back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); margin: 26px 0 0; }
+.back-link:hover { color: var(--ink); }
+
+/* ---------- Корзина ---------------------------------------- */
+.page-title { padding: 36px 0 8px; }
+.page-title h1 { font-size: clamp(2rem, 4vw, 2.6rem); margin: 0; }
+
+.cart-layout { display: grid; grid-template-columns: 1fr 320px; gap: 34px; padding: 22px 0 60px; align-items: start; }
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 84px 1fr auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.cart-item .thumb { width: 84px; height: 84px; border-radius: 10px; overflow: hidden; background: #ece3d4; }
+.cart-item .thumb img { width: 100%; height: 100%; object-fit: cover; }
+.cart-item .it-name { font-family: "Playfair Display", serif; font-size: 1.1rem; font-weight: 700; }
+.cart-item .it-meta { color: var(--muted); font-size: 0.88rem; }
+.cart-item .it-controls { display: flex; align-items: center; gap: 10px; }
+.cart-item .it-total { font-weight: 800; white-space: nowrap; }
+.link-danger { color: var(--accent); background: none; border: none; cursor: pointer; font: inherit; padding: 0; }
+.link-danger:hover { text-decoration: underline; }
+
+.summary {
+  position: sticky;
+  top: 92px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px;
+}
+.summary h3 { margin: 0 0 14px; font-size: 1.3rem; }
+.summary .row { display: flex; justify-content: space-between; padding: 8px 0; color: var(--muted); }
+.summary .row.total { border-top: 1px solid var(--line); margin-top: 8px; padding-top: 14px; color: var(--ink); font-size: 1.25rem; font-weight: 800; }
+
+.empty {
+  text-align: center;
+  padding: 70px 20px;
+  color: var(--muted);
+}
+.empty .big { font-size: 2.4rem; margin-bottom: 10px; }
+
+/* ---------- Формы-страницы (вход/регистрация/заказ) -------- */
+.form-card {
+  max-width: 440px;
+  margin: 46px auto 70px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 34px;
+  box-shadow: var(--shadow);
+}
+.form-card.wide { max-width: 620px; }
+.form-card h1 { font-size: 1.9rem; margin: 0 0 6px; }
+.form-card .muted { color: var(--muted); margin: 0 0 22px; }
+.field { margin-bottom: 16px; }
+.field label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.92rem; }
+.field .help { color: var(--muted); font-size: 0.8rem; margin-top: 5px; }
+.field .errorlist { color: var(--accent-dk); font-size: 0.84rem; margin: 6px 0 0; padding-left: 18px; }
+.form-foot { margin-top: 8px; text-align: center; color: var(--muted); font-size: 0.92rem; }
+.form-foot a { color: var(--accent); font-weight: 600; }
+
+/* ---------- Поддержка -------------------------------------- */
+.support-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  padding: 14px 0 24px;
+  align-items: stretch;
+}
+.support-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 30px;
+}
+.support-phone {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(180deg, #fbeee0 0%, var(--card) 100%);
+  border-color: #e8cdb0;
+}
+.support-icon { font-size: 2.2rem; }
+.support-label {
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+.support-number {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 0.01em;
+}
+.support-number:hover { color: var(--accent-dk); }
+.support-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+}
+.support-row:last-of-type { border-bottom: none; }
+.support-key { color: var(--muted); }
+.support-row a { color: var(--accent); font-weight: 600; }
+
+@media (max-width: 720px) {
+  .support-grid { grid-template-columns: 1fr; }
+}
+
+/* Сетка полей формы обратной связи */
+.support-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 18px;
+}
+.support-form-grid .field-wide { grid-column: 1 / -1; }
+@media (max-width: 560px) {
+  .support-form-grid { grid-template-columns: 1fr; }
+}
+
+/* ---------- Подвал ----------------------------------------- */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 30px 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+.site-footer .container { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+
+/* ---------- Адаптив ---------------------------------------- */
+@media (max-width: 860px) {
+  .detail { grid-template-columns: 1fr; gap: 24px; }
+  .cart-layout { grid-template-columns: 1fr; }
+  .summary { position: static; }
+}
+@media (max-width: 720px) {
+  .header-row { flex-wrap: wrap; }
+  .search { order: 3; flex-basis: 100%; }
+  .header-actions { margin-left: auto; }
+  .brand .sub { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto; }
+}
+
+/* ======== ДОПОЛНЕНИЯ: меню, лайки, акции, галерея, заказы ======== */
+
+/* ---------- Главное меню навигации ------------------------- */
+.main-nav { border-top: 1px solid var(--line); background: var(--paper); }
+.main-nav .container { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+.main-nav .container::-webkit-scrollbar { display: none; }
+.main-nav a {
+  padding: 12px 14px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: color .15s, border-color .15s;
+}
+.main-nav a:hover { color: var(--ink); border-color: var(--brass); }
+
+/* ---------- Лайки ------------------------------------------ */
+.like-form { display: inline-flex; }
+.like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .15s, background .15s, transform .08s;
+}
+.like-btn:active { transform: translateY(1px); }
+.like-btn:hover { border-color: var(--accent); }
+.like-btn .heart { color: var(--accent); font-size: 1.15rem; line-height: 1; }
+.like-btn.liked { background: #fbeae7; border-color: var(--accent); color: var(--accent-dk); }
+.like-num { font-variant-numeric: tabular-nums; }
+
+/* В карточке каталога лайк и «в корзину» в один ряд */
+.card-foot { margin-top: auto; display: flex; align-items: stretch; gap: 8px; }
+.card-foot .like-btn { padding: 8px 11px; font-size: 0.85rem; }
+.card-foot .add-form { flex: 1; }
+
+/* ---------- Акции ------------------------------------------ */
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+  padding: 16px 0 30px;
+}
+.promo-card {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 26px 24px 26px 28px;
+  overflow: hidden;
+}
+.promo-card::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--accent);
+}
+.promo-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 5px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+.promo-day {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brass);
+  margin-bottom: 6px;
+}
+.promo-title { font-size: 1.4rem; margin: 0 0 10px; }
+.promo-desc { color: var(--muted); margin: 0; }
+
+/* ---------- О ресторане + галерея -------------------------- */
+.about-text {
+  max-width: 760px;
+  margin: 0 auto;
+  font-size: 1.08rem;
+  color: #4a3f34;
+}
+.about-text p { margin: 0 0 18px; }
+.gallery-head { text-align: center; font-size: 1.8rem; margin: 36px 0 22px; }
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 18px;
+  padding-bottom: 60px;
+}
+.gallery-item {
+  margin: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+.gallery-item img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.gallery-item figcaption { padding: 10px 14px; color: var(--muted); font-size: 0.9rem; }
+
+/* ---------- Мои заказы ------------------------------------- */
+.orders { display: grid; gap: 18px; padding: 16px 0 60px; }
+.order-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.order-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: #f1e9da;
+}
+.order-no { font-family: "Playfair Display", serif; font-weight: 700; font-size: 1.15rem; }
+.order-date { color: var(--muted); margin-left: 8px; font-size: 0.9rem; }
+.order-status {
+  background: #eef5e8; color: #3f5230;
+  border: 1px solid #bcd1b0; border-radius: 999px;
+  padding: 4px 12px; font-size: 0.82rem; font-weight: 700;
+}
+.order-body { padding: 8px 20px; }
+.order-line { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+.order-line:last-child { border-bottom: none; }
+.order-foot {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 14px 20px; border-top: 1px solid var(--line);
+}
+.order-total { font-weight: 800; font-size: 1.1rem; }

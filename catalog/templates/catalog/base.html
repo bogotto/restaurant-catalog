@@ -1,0 +1,98 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Каталог блюд ресторана{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700;800&family=Manrope:wght@400;500;600;700&display=swap&subset=cyrillic,latin" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="brand" href="{% url 'catalog:dish_list' %}">
+        <span class="mark">Вкус&nbsp;&amp;&nbsp;Стиль</span>
+        <span class="sub">ресторан</span>
+      </a>
+
+      <form class="search" action="{% url 'catalog:dish_list' %}" method="get" role="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round">
+          <circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path>
+        </svg>
+        <input type="search" name="q" value="{{ query|default:'' }}"
+               placeholder="Поиск блюда — например, борщ или салат" aria-label="Поиск по сайту">
+      </form>
+
+      <div class="header-actions">
+        {% if user.is_authenticated %}
+          <span class="user-name">{{ user.username }}</span>
+          <form action="{% url 'accounts:logout' %}" method="post" style="display:inline">
+            {% csrf_token %}
+            <button type="submit" class="link-danger">Выйти</button>
+          </form>
+        {% else %}
+          <a href="{% url 'accounts:login' %}">Войти</a>
+          <a href="{% url 'accounts:register' %}">Регистрация</a>
+        {% endif %}
+        <a class="cart-link" href="{% url 'cart:cart_detail' %}">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
+          </svg>
+          Корзина
+          {% if cart|length %}<span class="cart-count">{{ cart|length }}</span>{% endif %}
+        </a>
+      </div>
+    </div>
+
+    <nav class="main-nav" aria-label="Основная навигация">
+      <div class="container">
+        <a href="{% url 'catalog:dish_list' %}">Меню</a>
+        <a href="{% url 'pages:promotions' %}">Акции</a>
+        <a href="{% url 'pages:about' %}">О ресторане</a>
+        <a href="{% url 'catalog:support' %}">Поддержка</a>
+        {% if user.is_authenticated %}
+          <a href="{% url 'cart:order_list' %}">Мои заказы</a>
+        {% endif %}
+      </div>
+    </nav>
+
+    {% block category_bar %}
+      <div class="cat-bar">
+        <div class="container">
+          <nav class="cat-tabs" aria-label="Категории меню">
+            <a class="cat-tab {% if not current_category %}active{% endif %}"
+               href="{% url 'catalog:dish_list' %}">Все блюда</a>
+            {% for c in nav_categories %}
+              <a class="cat-tab {% if current_category.id == c.id %}active{% endif %}"
+                 href="?category={{ c.id }}">{{ c.name }}</a>
+            {% endfor %}
+          </nav>
+        </div>
+      </div>
+    {% endblock %}
+  </header>
+
+  <main class="container">
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="message {{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </main>
+
+  {% block content %}{% endblock %}
+
+  <footer class="site-footer">
+    <div class="container">
+      <span>© {% now "Y" %} Ресторан «Вкус &amp; Стиль». Онлайн-каталог продукции.</span>
+      <span><a href="{% url 'catalog:support' %}">Поддержка</a> · Дипломный проект · Django</span>
+    </div>
+  </footer>
+</body>
+</html>

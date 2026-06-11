@@ -1,0 +1,69 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Поддержка — ресторан «Вкус & Стиль»{% endblock %}
+{% block category_bar %}{% endblock %}
+
+{% block content %}
+<section class="container">
+  <div class="page-title">
+    <h1>Поддержка</h1>
+    <p class="muted" style="margin-top:6px">Возникли вопросы по меню, заказу или работе сайта? Мы на связи и поможем.</p>
+  </div>
+
+  <div class="support-grid">
+    <!-- Телефон — главный способ связи -->
+    <div class="support-card support-phone">
+      <div class="support-icon">📞</div>
+      <div class="support-label">Горячая линия</div>
+      <a class="support-number" href="tel:+78006000000">+7 (800) 600-00-00</a>
+      <p class="muted">Звонок по России бесплатный</p>
+    </div>
+
+    <!-- Прочие контакты -->
+    <div class="support-card">
+      <div class="support-row">
+        <span class="support-key">✉️ E-mail</span>
+        <a href="mailto:support@vkus-stil.ru">support@vkus-stil.ru</a>
+      </div>
+      <div class="support-row">
+        <span class="support-key">🕒 Часы работы</span>
+        <span>Ежедневно с 10:00 до 22:00</span>
+      </div>
+      <div class="support-row">
+        <span class="support-key">📍 Адрес</span>
+        <span>г. Санкт-Петербург, Невский пр., д. 1</span>
+      </div>
+      <p class="muted" style="margin:16px 0 0">
+        Отвечаем на письма в течение рабочего дня. Если вопрос срочный —
+        лучше позвонить по номеру горячей линии.
+      </p>
+    </div>
+  </div>
+
+  <!-- Форма обратной связи -->
+  <div class="support-card" style="margin-bottom:24px">
+    <h2 style="margin:0 0 6px;font-size:1.5rem">Написать в поддержку</h2>
+    <p class="muted" style="margin:0 0 20px">
+      Оставьте сообщение — мы свяжемся с вами по указанным контактам.
+    </p>
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <ul class="errorlist">{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      {% endif %}
+      <div class="support-form-grid">
+        {% for field in form %}
+          <div class="field {% if field.name == 'message' %}field-wide{% endif %}">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+        {% endfor %}
+      </div>
+      <button type="submit" class="btn btn-primary">Отправить сообщение</button>
+    </form>
+  </div>
+
+  <a class="back-link" href="{% url 'catalog:dish_list' %}">← Вернуться в каталог</a>
+</section>
+{% endblock %}

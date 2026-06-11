@@ -1,0 +1,33 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Оформление заказа{% endblock %}
+{% block category_bar %}{% endblock %}
+
+{% block content %}
+<section class="container">
+  <div class="form-card wide">
+    <h1>Оформление заказа</h1>
+    <p class="muted">Проверьте состав и укажите данные для доставки.</p>
+
+    <div class="summary" style="position:static;margin-bottom:22px">
+      {% for item in cart %}
+        <div class="row"><span>{{ item.dish.name }} × {{ item.quantity }}</span><span>{{ item.total_price }} ₽</span></div>
+      {% endfor %}
+      <div class="row total"><span>К оплате</span><span>{{ cart.get_total_price }} ₽</span></div>
+    </div>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary btn-block">Подтвердить заказ</button>
+    </form>
+    <p class="form-foot"><a href="{% url 'cart:cart_detail' %}">← Вернуться в корзину</a></p>
+  </div>
+</section>
+{% endblock %}

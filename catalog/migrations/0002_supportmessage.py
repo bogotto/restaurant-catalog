@@ -1,0 +1,28 @@
+from django.db import migrations, models
+
+
+class Migration(migrations.Migration):
+
+    dependencies = [
+        ("catalog", "0001_initial"),
+    ]
+
+    operations = [
+        migrations.CreateModel(
+            name="SupportMessage",
+            fields=[
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
+                ("name", models.CharField(max_length=150, verbose_name="Имя")),
+                ("email", models.EmailField(max_length=254, verbose_name="E-mail")),
+                ("phone", models.CharField(blank=True, max_length=20, verbose_name="Телефон")),
+                ("message", models.TextField(verbose_name="Сообщение")),
+                ("created", models.DateTimeField(auto_now_add=True, verbose_name="Получено")),
+                ("is_processed", models.BooleanField(default=False, verbose_name="Обработано")),
+            ],
+            options={
+                "verbose_name": "Обращение в поддержку",
+                "verbose_name_plural": "Обращения в поддержку",
+                "ordering": ["-created"],
+            },
+        ),
+    ]

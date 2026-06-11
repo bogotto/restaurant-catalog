@@ -1,0 +1,22 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Заказ оформлен{% endblock %}
+{% block category_bar %}{% endblock %}
+
+{% block content %}
+<section class="container">
+  <div class="form-card" style="text-align:center">
+    <div style="font-size:3rem">✅</div>
+    <h1>Заказ №{{ order.id }} оформлен</h1>
+    <p class="muted">Спасибо, {{ order.full_name }}! Мы свяжемся с вами по телефону {{ order.phone }} для подтверждения.</p>
+    <div class="summary" style="position:static;text-align:left;margin:18px 0">
+      {% for item in order.items.all %}
+        <div class="row"><span>{{ item.dish.name }} × {{ item.quantity }}</span><span>{{ item.get_cost }} ₽</span></div>
+      {% endfor %}
+      <div class="row total"><span>Сумма</span><span>{{ order.get_total_cost }} ₽</span></div>
+    </div>
+    <a class="btn btn-primary btn-block" href="{% url 'catalog:dish_list' %}">Вернуться в каталог</a>
+    <a class="btn btn-ghost btn-block" href="{% url 'cart:order_list' %}" style="margin-top:10px">Мои заказы</a>
+  </div>
+</section>
+{% endblock %}

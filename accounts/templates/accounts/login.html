@@ -1,0 +1,30 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Вход{% endblock %}
+{% block category_bar %}{% endblock %}
+
+{% block content %}
+<section class="container">
+  <div class="form-card">
+    <h1>Вход</h1>
+    <p class="muted">Войдите, чтобы продолжить оформление заказа.</p>
+
+    <form method="post" novalidate>
+      {% csrf_token %}
+      {% if form.non_field_errors %}
+        <ul class="errorlist">{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul>
+      {% endif %}
+      {% for field in form %}
+        <div class="field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}<ul class="errorlist">{% for e in field.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+        </div>
+      {% endfor %}
+      <button type="submit" class="btn btn-primary btn-block">Войти</button>
+    </form>
+
+    <p class="form-foot">Нет аккаунта? <a href="{% url 'accounts:register' %}">Зарегистрироваться</a></p>
+  </div>
+</section>
+{% endblock %}
